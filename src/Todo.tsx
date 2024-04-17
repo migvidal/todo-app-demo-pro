@@ -1,5 +1,8 @@
 export class Todo {
-  constructor(title, description, isImportant) {
+  title: string;
+  description: string;
+  isImportant: boolean;
+  constructor(title: string, description: string, isImportant: boolean) {
     this.title = title;
     this.description = description;
     this.isImportant = isImportant;
