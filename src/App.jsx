@@ -1,26 +1,23 @@
 import { useState } from "react"
-import { Todo } from "./Todo"
+import { todos } from "./Todo"
 import { TodoItem } from "./TodoItem"
 
 const App = () => {
-  let [doneTodos, setDoneTodos] = useState(new Set())
-  const todos = [
-    new Todo("Buy bread", "Whole grain from the cerel aisle", false),
-    new Todo("Buy cereal", "Corn flakes, Kellogs brand", false),
-    new Todo("Do your mom", "Got em", true),
-  ]
+  let [doneTodos, setDoneTodos] = useState(new Set());
+
   function onItemClicked(todo) {
     let newDoneTodos = doneTodos
     if (doneTodos.has(todo)) {
-      newDoneTodos.delete(todo)
+      newDoneTodos.delete(todo);
     } else {
-      newDoneTodos.add(todo)
+      newDoneTodos.add(todo);
     }
-    setDoneTodos(newDoneTodos)
+    setDoneTodos(newDoneTodos);
   }
   return (
     <main className="m-2 max-w-xl">
       <h1 className="text-2xl font-bold">Todo app</h1>
+      <p>{doneTodos.forEach(dt => <strong>{dt.title}</strong>)}</p>
       {todos.map(todo =>
         <TodoItem
           key={todo.title}
