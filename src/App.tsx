@@ -3,13 +3,15 @@ import { Todo, todos } from "./Todo"
 import { TodoItem } from "./TodoItem"
 import React from "react";
 import { todo } from "node:test";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
 
 const App = () => {
   let [doneTodos, setDoneTodos] = useState(new Set<Todo>());
 
   function updateDoneTodos(newTodo: Todo) {
     const newSet = new Set(doneTodos);
-    if(newSet.has(newTodo)) {
+    if (newSet.has(newTodo)) {
       newSet.delete(newTodo);
     } else {
       newSet.add(newTodo);
