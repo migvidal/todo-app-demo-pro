@@ -1,13 +1,21 @@
 import { useState } from "react"
-import { Todo, todos } from "./Todo"
+import { Todo, dummyTodos } from "./Todo"
 import { TodoItem } from "./TodoItem"
 import React from "react";
 import { todo } from "node:test";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit } from '@fortawesome/free-solid-svg-icons'
 import { CustomButton } from "./CustomButton";
+import { ComposeWindow } from "./ComposeWindow";
 
 const App = () => {
+  let [todos, setTodos] = useState(dummyTodos);
+  function addTodo(todo: Todo) {
+    const newSet = new Set(todos);
+    newSet.add(todo);
+    setTodos(newSet);
+  }
+
   let [doneTodos, setDoneTodos] = useState(new Set<Todo>());
   function updateDoneTodos(newTodo: Todo) {
     const newSet = new Set(doneTodos);
@@ -33,6 +41,7 @@ const App = () => {
           onClick={() => updateDoneTodos(todo)}
           isChecked={doneTodos.has(todo)} />
       )}
+      <ComposeWindow onSubmit={newTodo => addTodo(newTodo)}/>
     </main>
   )
 }
