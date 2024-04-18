@@ -27,7 +27,7 @@ export const ComposeWindow = ({ onSubmit }: { onSubmit: (todo: Todo) => any }) =
     return (
         <form className="flex flex-col" onSubmit={e => onFormSubmit(e)}>
             <label htmlFor="todo-title-input">Title</label>
-            <input className={cardStyle} onChange={e => onTitleChange(e.target.value)} type="text" name="todo-title-input" id="todo-title-input" />
+            <input className={cardStyle} onChange={e => onTitleChange(e.target.value)} type="text" required name="todo-title-input" id="todo-title-input" />
             <label htmlFor="todo-description-input">Description</label>
             <textarea className={cardStyle} onChange={e => onDescriptionChange(e.target.value)} name="todo-description-input" id="todo-description-input" cols={30} rows={5}></textarea>
             <div className="flex flex-row items-center">
