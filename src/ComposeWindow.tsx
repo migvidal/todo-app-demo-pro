@@ -5,7 +5,7 @@ import { title } from "process";
 import { CustomButton } from "./CustomButton";
 
 export const ComposeWindow = ({ onSubmit }: { onSubmit: (todo: Todo) => any }) => {
-    let cardStyle = "rounded-lg my-2 p-4 border-2 border-gray-500 bg-slate-300 text-black dark:bg-slate-800 dark:text-white"
+    let cardStyle = "rounded-lg my-2 p-4 border-2 border-gray-500 text-black dark:bg-slate-800 dark:text-white"
     let [formPayload, setFormPayload] = useState(new Todo("", "", false))
     function onFormSubmit(e: FormEvent) {
         e.preventDefault();
@@ -30,8 +30,8 @@ export const ComposeWindow = ({ onSubmit }: { onSubmit: (todo: Todo) => any }) =
             <input className={cardStyle} onChange={e => onTitleChange(e.target.value)} type="text" name="todo-title-input" id="todo-title-input" />
             <label htmlFor="todo-description-input">Description</label>
             <textarea className={cardStyle} onChange={e => onDescriptionChange(e.target.value)} name="todo-description-input" id="todo-description-input" cols={30} rows={5}></textarea>
-            <div>
-                <input onChange={e => onIsImportantChange(e.target.checked)} type="checkbox" name="todo-important-input" id="todo-important-input" />
+            <div className="flex flex-row items-center">
+                <input className="appearance-none size-5 rounded-md border-2 border-gray-500 checked:bg-cyan-200 dark:checked:bg-cyan-800" onChange={e => onIsImportantChange(e.target.checked)} type="checkbox" name="todo-important-input" id="todo-important-input" />
                 <span className="px-1"></span>
                 <label htmlFor="todo-important-input">Important</label>
             </div>
