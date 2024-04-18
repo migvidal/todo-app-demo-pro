@@ -5,7 +5,7 @@ import { title } from "process";
 import { CustomButton } from "./CustomButton";
 
 export const ComposeWindow = ({ onSubmit }: { onSubmit: (todo: Todo) => any }) => {
-    let cardStyle = "rounded-lg my-2 p-4 border-2 border-gray-500 text-black dark:bg-slate-800 dark:text-white"
+    let cardStyle = "rounded-lg my-2 p-4 border-2 border-gray-500 dark:bg-slate-800"
     let [formPayload, setFormPayload] = useState(new Todo("", "", false))
     function onFormSubmit(e: FormEvent) {
         e.preventDefault();
@@ -25,7 +25,7 @@ export const ComposeWindow = ({ onSubmit }: { onSubmit: (todo: Todo) => any }) =
         setFormPayload(newTodo)
     }
     return (
-        <form className="flex flex-col" onSubmit={e => onFormSubmit(e)}>
+        <form className="flex flex-col dark:text-white" onSubmit={e => onFormSubmit(e)}>
             <label htmlFor="todo-title-input">Title</label>
             <input className={cardStyle} onChange={e => onTitleChange(e.target.value)} type="text" required name="todo-title-input" id="todo-title-input" />
             <label htmlFor="todo-description-input">Description</label>
@@ -36,7 +36,7 @@ export const ComposeWindow = ({ onSubmit }: { onSubmit: (todo: Todo) => any }) =
                 <label htmlFor="todo-important-input">Important</label>
             </div>
             <div>
-                <CustomButton label={"Submit"} icon={undefined} onClick={() => { }} />
+                <CustomButton style="" label={"Submit"} icon={undefined} onClick={() => { }} />
             </div>
         </form>
     )
