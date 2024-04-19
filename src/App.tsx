@@ -35,25 +35,38 @@ const App = () => {
   return (
     <main className="m-2 max-w-xl">
       <h1 className="text-2xl font-bold">Todo App</h1>
+
       <div className="flex flex-row">
-        <CustomButton
-          style=""
-          label={editMode ? "Cancel" : "Edit"}
-          icon={undefined}
-          onClick={() => setEditMode(!editMode)} />
+        {todos.size != 0 ?
+          <CustomButton
+            style=""
+            label={editMode ? "Cancel" : "Edit"}
+            icon={undefined}
+            onClick={() => setEditMode(!editMode)} />
+          : ""
+        }
         <CustomButton
           style=""
           label={"Add"}
           icon={<FontAwesomeIcon icon={faPlus} />}
           onClick={() => setDialogVisible(true)} />
       </div>
-      {Array.from(todos).map(todo =>
-        <TodoItem
-          key={todo.title}
-          todo={todo}
-          onClick={() => updateDoneTodos(todo)}
-          isChecked={doneTodos.has(todo)} />
-      )}
+
+      {todos.size == 0 ?
+        <div className="flex justify-center text-slate-400">
+          No tasks left!
+        </div>
+        :
+
+        Array.from(todos).map(todo =>
+          <TodoItem
+            key={todo.title}
+            todo={todo}
+            onClick={() => updateDoneTodos(todo)}
+            isChecked={doneTodos.has(todo)}>
+            {editMode ? <button><FontAwesomeIcon icon={faTrash} onClick={() => todos.delete(todo)} /></button> : ""}
+          </TodoItem>
+        )}
       <dialog open={dialogVisible} className="absolute top-0 left-0 p-10 m-2 rounded-2xl bg-slate-200/90 dark:bg-slate-900/95">
         <div className="flex flex-row-reverse">
           <CustomButton
