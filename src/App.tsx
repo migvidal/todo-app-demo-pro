@@ -32,55 +32,68 @@ const App = () => {
   let [dialogVisible, setDialogVisible] = useState(false);
   let [editMode, setEditMode] = useState(false);
 
+  const composeDialog = document.getElementById("compose-dialog") as HTMLDialogElement | undefined;
+  if (composeDialog) {
+    if (dialogVisible) {
+      composeDialog.showModal();
+    } else {
+      composeDialog.close();
+    }
+  }
+
   return (
-    <main className="m-2 max-w-xl">
-      <h1 className="text-2xl font-bold">Todo App</h1>
+    <main className="mx-auto max-w-xl">
+      <div className="m-2">
+        <h1 className="text-2xl font-bold">Todo App</h1>
 
-      <div className="flex flex-row">
-        {todos.size != 0 ?
+        <div className="flex flex-row justify-between">
+          {todos.size != 0 ?
+            <CustomButton
+              style=""
+              label={editMode ? "Cancel" : "Edit"}
+              icon={undefined}
+              onClick={() => setEditMode(!editMode)} />
+            : ""
+          }
           <CustomButton
             style=""
-            label={editMode ? "Cancel" : "Edit"}
-            icon={undefined}
-            onClick={() => setEditMode(!editMode)} />
-          : ""
-        }
-        <CustomButton
-          style=""
-          label={"Add"}
-          icon={<FontAwesomeIcon icon={faPlus} />}
-          onClick={() => setDialogVisible(true)} />
+            label={"Add"}
+            icon={<FontAwesomeIcon icon={faPlus} />}
+            onClick={() => setDialogVisible(true)} />
+        </div>
+
+        {todos.size == 0 ?
+          <div className="flex justify-center text-slate-400">
+            No tasks left!
+          </div>
+          :
+
+          Array.from(todos).map(todo =>
+            <TodoItem
+              key={todo.title}
+              todo={todo}
+              onClick={() => updateDoneTodos(todo)}
+              isChecked={doneTodos.has(todo)}>
+              {editMode ? <button><FontAwesomeIcon icon={faTrash} onClick={() => todos.delete(todo)} /></button> : ""}
+            </TodoItem>
+          )}
+        <dialog id="compose-dialog" className="absolute left-0 right-0 top-0 bottom-0  backdrop-blur p-4 rounded-2xl bg-slate-200/70 dark:bg-slate-900/95">
+          <div>
+            <div className="flex flex-row-reverse">
+              <CustomButton
+                style=""
+                label={"Close"}
+                icon={<FontAwesomeIcon icon={faXmark} />}
+                onClick={() => setDialogVisible(false)}
+              />
+            </div>
+            <ComposeWindow
+              onSubmit={newTodo => submitTodo(newTodo)}
+            />
+          </div>
+
+        </dialog>
       </div>
-
-      {todos.size == 0 ?
-        <div className="flex justify-center text-slate-400">
-          No tasks left!
-        </div>
-        :
-
-        Array.from(todos).map(todo =>
-          <TodoItem
-            key={todo.title}
-            todo={todo}
-            onClick={() => updateDoneTodos(todo)}
-            isChecked={doneTodos.has(todo)}>
-            {editMode ? <button><FontAwesomeIcon icon={faTrash} onClick={() => todos.delete(todo)} /></button> : ""}
-          </TodoItem>
-        )}
-      <dialog open={dialogVisible} className="absolute top-0 left-0 p-10 m-2 rounded-2xl bg-slate-200/90 dark:bg-slate-900/95">
-        <div className="flex flex-row-reverse">
-          <CustomButton
-            style=""
-            label={"Close"}
-            icon={<FontAwesomeIcon icon={faXmark} />}
-            onClick={() => setDialogVisible(false)}
-          />
-        </div>
-        <ComposeWindow
-          onSubmit={newTodo => submitTodo(newTodo)}
-        />
-
-      </dialog>
     </main>
   )
 }

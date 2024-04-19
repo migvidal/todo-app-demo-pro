@@ -8,8 +8,6 @@ export const TodoItem = ({ todo, onClick, isChecked, children }: { todo: Todo, o
     let regularStyle = commonStyle + "bg-cyan-200 border-cyan-400 dark:bg-cyan-800 dark:border-cyan-600";
     let importantStyle = commonStyle + "bg-red-200 border-red-400 dark:bg-red-800 dark:border-red-600";
     let finalStyle = isImportant ? importantStyle : regularStyle;
-    console.log("Children")
-    console.log(children)
     return (
         <section className={finalStyle} onClick={onClick}>
             <div className="flex-1">
