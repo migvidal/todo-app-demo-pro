@@ -5,6 +5,7 @@ import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit } from '@fortawesome/free-solid-svg-icons'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { CustomButton } from "./CustomButton";
 import { ComposeWindow } from "./ComposeWindow";
@@ -37,8 +38,8 @@ const App = () => {
       <div className="flex flex-row">
         <CustomButton
           style=""
-          label={"Edit"}
-          icon={<FontAwesomeIcon icon={faEdit} />}
+          label={editMode ? "Cancel" : "Edit"}
+          icon={undefined}
           onClick={() => setEditMode(!editMode)} />
         <CustomButton
           style=""
@@ -49,9 +50,7 @@ const App = () => {
       {Array.from(todos).map(todo =>
         <TodoItem
           key={todo.title}
-          title={todo.title}
-          description={todo.description}
-          isImportant={todo.isImportant}
+          todo={todo}
           onClick={() => updateDoneTodos(todo)}
           isChecked={doneTodos.has(todo)} />
       )}
