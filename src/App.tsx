@@ -1,5 +1,5 @@
-import { useState } from "react"
-import { Todo, dummyTodos } from "./Todo"
+import { useEffect, useState } from "react"
+import { Todo, sampleTodos } from "./Todo"
 import { TodoItem } from "./TodoItem"
 import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -10,16 +10,59 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { CustomButton } from "./CustomButton";
 import { ComposeWindow } from "./ComposeWindow";
 
+const storedTodosKey = "storedTodos"
+const storedDoneTodosKey = "storedDoneTodos"
+
 const App = () => {
-  let [todos, setTodos] = useState(dummyTodos);
-  function submitTodo(todo: Todo) {
+  // Initial load
+  useEffect(() => {
+    console.log("initial load");
+    // Load sample todos
+    const sampleTodosAsJson = JSON.stringify(Array.from(sampleTodos));
+    if (localStorage.getItem(storedTodosKey) == null) {
+      localStorage.setItem(storedTodosKey, sampleTodosAsJson);
+    }
+
+    // Load todos
+    const storedTodos = localStorage.getItem(storedTodosKey) as string
+    setTodos(new Set(JSON.parse(storedTodos) as Todo[]))
+
+
+    // Load done todos
+    if (localStorage.getItem(storedDoneTodosKey) != null) {
+      const storedDoneTodos = localStorage.getItem(storedDoneTodosKey) as string
+      setDoneTodos(new Set(JSON.parse(storedDoneTodos) as Todo[]))
+    }
+  }, []);
+  let [todos, setTodos] = useState(new Set<Todo>());
+  useEffect(() => {
+    // Save todos to local storage
+    //console.log("Save todos to local storage");
+    const todosAsJson = JSON.stringify(Array.from(todos));
+    localStorage.setItem(storedTodosKey, todosAsJson);
+  }, [todos]);
+
+  function submitTodo(newTodo: Todo) {
+    const alreadyExists = Array.from(todos).some(todo => todo.title == newTodo.title);
+    if (alreadyExists) { return }
     const newSet = new Set(todos);
-    newSet.add(todo);
+    newSet.add(newTodo);
     setTodos(newSet);
     setDialogVisible(false);
   }
+  function deleteTodo(todo: Todo) {
+    const newSet = new Set(todos);
+    newSet.delete(todo);
+    setTodos(newSet);
+  }
 
   let [doneTodos, setDoneTodos] = useState(new Set<Todo>());
+  useEffect(() => {
+    // Save doneTodos to local storage
+    console.log("Save doneTodos to local storage");
+    const doneTodosAsJson = JSON.stringify(Array.from(doneTodos))
+    localStorage.setItem(storedDoneTodosKey, doneTodosAsJson);
+  }, [doneTodos]);
   function updateDoneTodos(newTodo: Todo) {
     const newSet = new Set(doneTodos);
     if (newSet.has(newTodo)) {
@@ -40,6 +83,7 @@ const App = () => {
       composeDialog.close();
     }
   }
+
 
   return (
     <main className="mx-auto max-w-xl">
@@ -74,7 +118,7 @@ const App = () => {
               todo={todo}
               onClick={() => updateDoneTodos(todo)}
               isChecked={doneTodos.has(todo)}>
-              {editMode ? <button><FontAwesomeIcon icon={faTrash} onClick={() => todos.delete(todo)} /></button> : ""}
+              {editMode ? <button><FontAwesomeIcon icon={faTrash} onClick={() => deleteTodo(todo)} /></button> : ""}
             </TodoItem>
           )}
         <dialog id="compose-dialog" className="absolute left-0 right-0 top-0 bottom-0  backdrop-blur p-4 rounded-2xl bg-slate-200/70 dark:bg-slate-900/95">
