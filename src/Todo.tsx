@@ -10,7 +10,6 @@ export class Todo {
 }
 
 export const sampleTodos = new Set([
-  new Todo("Buy bread", "Whole grain from the cereal aisle", false),
-  new Todo("Buy cereal", "Corn flakes, Kellogs brand", false),
-  new Todo("Get Amazon package", "From the locker @ the gas station", true),
+  new Todo("This is a reminder", "Also known as a Todo", false),
+  new Todo("This is an important reminder", "That's why it shows up in red", true),
 ])
