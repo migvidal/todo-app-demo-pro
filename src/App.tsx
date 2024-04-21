@@ -52,18 +52,21 @@ const App = () => {
     setDialogVisible(false);
   }
 
-  function deleteTodo(todo: Todo) {
+  function deleteTodo(todoToDelete: Todo) {
     const newSet = new Set(todos);
-    newSet.delete(todo);
+    newSet.forEach(todo => {
+      if (todo.title == todoToDelete.title) {
+        newSet.delete(todo);
+      }
+    });
     setTodos(newSet);
-    updateDoneTodos(todo, true);
+    updateDoneTodos(todoToDelete, true);
   }
 
   let [doneTodos, setDoneTodos] = useState(new Set<Todo>());
 
   useEffect(() => {
     // Save doneTodos to local storage
-    console.log("Save doneTodos to local storage");
     const doneTodosAsJson = JSON.stringify(Array.from(doneTodos));
     localStorage.setItem(storedDoneTodosKey, doneTodosAsJson);
   }, [doneTodos]);
@@ -76,7 +79,12 @@ const App = () => {
     const alreadyExists = Array.from(doneTodos).some(todo => todo.title == newTodo.title);
     const newSet = new Set(doneTodos);
     if (alreadyExists || forceDelete) {
-      newSet.delete(newTodo);
+      // Properly delete
+      newSet.forEach(todo => {
+        if (todo.title == newTodo.title) {
+          newSet.delete(todo);
+        }
+      });
     } else {
       newSet.add(newTodo);
     }
