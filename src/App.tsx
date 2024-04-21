@@ -68,6 +68,10 @@ const App = () => {
     localStorage.setItem(storedDoneTodosKey, doneTodosAsJson);
   }, [doneTodos]);
 
+  function isDone(todo: Todo): boolean {
+    return Array.from(doneTodos).some(i => i.title == todo.title);
+  }
+
   function updateDoneTodos(newTodo: Todo, forceDelete: boolean = false) {
     const alreadyExists = Array.from(doneTodos).some(todo => todo.title == newTodo.title);
     const newSet = new Set(doneTodos);
@@ -123,7 +127,7 @@ const App = () => {
               key={todo.title}
               todo={todo}
               onClick={() => !editMode ? updateDoneTodos(todo) : {}}
-              isChecked={doneTodos.has(todo)}>
+              isChecked={isDone(todo)}>
               {editMode ?
                 <button>
                   <FontAwesomeIcon icon={faTrash} onClick={() => deleteTodo(todo)} />
