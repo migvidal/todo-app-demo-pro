@@ -56,6 +56,7 @@ const App = () => {
     const newSet = new Set(todos);
     newSet.delete(todo);
     setTodos(newSet);
+    updateDoneTodos(todo, true);
   }
 
   let [doneTodos, setDoneTodos] = useState(new Set<Todo>());
@@ -67,10 +68,10 @@ const App = () => {
     localStorage.setItem(storedDoneTodosKey, doneTodosAsJson);
   }, [doneTodos]);
 
-  function updateDoneTodos(newTodo: Todo) {
+  function updateDoneTodos(newTodo: Todo, forceDelete: boolean = false) {
     const alreadyExists = Array.from(doneTodos).some(todo => todo.title == newTodo.title);
     const newSet = new Set(doneTodos);
-    if (alreadyExists) {
+    if (alreadyExists || forceDelete) {
       newSet.delete(newTodo);
     } else {
       newSet.add(newTodo);
@@ -121,9 +122,13 @@ const App = () => {
             <TodoItem
               key={todo.title}
               todo={todo}
-              onClick={() => updateDoneTodos(todo)}
+              onClick={() => !editMode ? updateDoneTodos(todo) : {}}
               isChecked={doneTodos.has(todo)}>
-              {editMode ? <button><FontAwesomeIcon icon={faTrash} onClick={() => deleteTodo(todo)} /></button> : ""}
+              {editMode ?
+                <button>
+                  <FontAwesomeIcon icon={faTrash} onClick={() => deleteTodo(todo)} />
+                </button>
+                : ""}
             </TodoItem>
           )}
         <dialog id="compose-dialog" className="absolute left-0 right-0 top-0 bottom-0  backdrop-blur p-4 rounded-2xl bg-slate-200/70 dark:bg-slate-900/95">
