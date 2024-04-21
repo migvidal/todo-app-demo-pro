@@ -3,7 +3,6 @@ import { Todo, sampleTodos } from "./Todo"
 import { TodoItem } from "./TodoItem"
 import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEdit } from '@fortawesome/free-solid-svg-icons'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
@@ -14,30 +13,32 @@ const storedTodosKey = "storedTodos"
 const storedDoneTodosKey = "storedDoneTodos"
 
 const App = () => {
+
   // Initial load
   useEffect(() => {
-    console.log("initial load");
-    // Load sample todos
+    // Save sample todos for the first time using the app
     const sampleTodosAsJson = JSON.stringify(Array.from(sampleTodos));
     if (localStorage.getItem(storedTodosKey) == null) {
       localStorage.setItem(storedTodosKey, sampleTodosAsJson);
     }
 
     // Load todos
-    const storedTodos = localStorage.getItem(storedTodosKey) as string
-    setTodos(new Set(JSON.parse(storedTodos) as Todo[]))
+    const storedTodos = localStorage.getItem(storedTodosKey) as string;
+    setTodos(new Set(JSON.parse(storedTodos) as Todo[]));
 
 
     // Load done todos
-    if (localStorage.getItem(storedDoneTodosKey) != null) {
-      const storedDoneTodos = localStorage.getItem(storedDoneTodosKey) as string
-      setDoneTodos(new Set(JSON.parse(storedDoneTodos) as Todo[]))
+    const storedDoneTodos = localStorage.getItem(storedDoneTodosKey) as string;
+    if (storedTodos != null) {
+      const storedDoneTodosAsArray = JSON.parse(storedDoneTodos) as Todo[];
+      setDoneTodos(new Set(storedDoneTodosAsArray));
     }
   }, []);
+
   let [todos, setTodos] = useState(new Set<Todo>());
+
   useEffect(() => {
     // Save todos to local storage
-    //console.log("Save todos to local storage");
     const todosAsJson = JSON.stringify(Array.from(todos));
     localStorage.setItem(storedTodosKey, todosAsJson);
   }, [todos]);
@@ -50,6 +51,7 @@ const App = () => {
     setTodos(newSet);
     setDialogVisible(false);
   }
+
   function deleteTodo(todo: Todo) {
     const newSet = new Set(todos);
     newSet.delete(todo);
@@ -57,15 +59,18 @@ const App = () => {
   }
 
   let [doneTodos, setDoneTodos] = useState(new Set<Todo>());
+
   useEffect(() => {
     // Save doneTodos to local storage
     console.log("Save doneTodos to local storage");
-    const doneTodosAsJson = JSON.stringify(Array.from(doneTodos))
+    const doneTodosAsJson = JSON.stringify(Array.from(doneTodos));
     localStorage.setItem(storedDoneTodosKey, doneTodosAsJson);
   }, [doneTodos]);
+
   function updateDoneTodos(newTodo: Todo) {
+    const alreadyExists = Array.from(doneTodos).some(todo => todo.title == newTodo.title);
     const newSet = new Set(doneTodos);
-    if (newSet.has(newTodo)) {
+    if (alreadyExists) {
       newSet.delete(newTodo);
     } else {
       newSet.add(newTodo);
