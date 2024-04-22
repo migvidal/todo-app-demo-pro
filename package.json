@@ -2,7 +2,7 @@
   "name": "part1",
   "private": true,
   "version": "0.0.0",
-  "homepage": "http://migvidal.github.io/todo-app-demo-pro",
+  "homepage": "http://migvidal.github.io/todo-app-demo-pro/",
   "type": "module",
   "scripts": {
     "dev": "vite",
