@@ -31,7 +31,7 @@ export const ComposeWindow = ({ onSubmit }: { onSubmit: (todo: Todo) => any }) =
             <label htmlFor="todo-description-input">Description</label>
             <textarea className={cardStyle} onChange={e => onDescriptionChange(e.target.value)} name="todo-description-input" id="todo-description-input" cols={30} rows={5}></textarea>
             <div className="flex flex-row items-center">
-                <input className="appearance-none size-5 rounded-md border-2 border-gray-500 checked:bg-cyan-200 dark:checked:bg-cyan-800" onChange={e => onIsImportantChange(e.target.checked)} type="checkbox" name="todo-important-input" id="todo-important-input" />
+                <input className="appearance-none size-5 rounded-md border-2 border-gray-500 checked:bg-gray-500"  onChange={e => onIsImportantChange(e.target.checked)} type="checkbox" name="todo-important-input" id="todo-important-input" />
                 <span className="px-1"></span>
                 <label htmlFor="todo-important-input">Important</label>
             </div>
