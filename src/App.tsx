@@ -50,6 +50,7 @@ const App = () => {
     newSet.add(newTodo);
     setTodos(newSet);
     setDialogVisible(false);
+    
   }
 
   function deleteTodo(todoToDelete: Todo) {
