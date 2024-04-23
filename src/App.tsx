@@ -50,7 +50,7 @@ const App = () => {
     newSet.add(newTodo);
     setTodos(newSet);
     setDialogVisible(false);
-    
+
   }
 
   function deleteTodo(todoToDelete: Todo) {
@@ -105,63 +105,69 @@ const App = () => {
 
 
   return (
-    <main className="mx-auto max-w-xl">
-      <div className="m-2">
-        <h1 className="text-2xl font-bold">Todo App</h1>
+    <div className="size-full">
+      <main className="mx-auto max-w-xl">
+        <div className="m-2">
+          <h1 className="text-2xl font-bold">Todo App</h1>
 
-        <div className="flex flex-row justify-between">
-          {todos.size != 0 ?
-            <CustomButton
-              style=""
-              label={editMode ? "Cancel" : "Edit"}
-              icon={undefined}
-              onClick={() => setEditMode(!editMode)} />
-            : ""
-          }
-          <CustomButton
-            style=""
-            label={"Add"}
-            icon={<FontAwesomeIcon icon={faPlus} />}
-            onClick={() => setDialogVisible(true)} />
-        </div>
-
-        {todos.size == 0 ?
-          <div className="flex justify-center text-slate-400">
-            No tasks left!
-          </div>
-          :
-
-          Array.from(todos).map(todo =>
-            <TodoItem
-              key={todo.title}
-              todo={todo}
-              onClick={() => !editMode ? updateDoneTodos(todo) : {}}
-              isChecked={isDone(todo)}>
-              {editMode ?
-                <button>
-                  <FontAwesomeIcon icon={faTrash} onClick={() => deleteTodo(todo)} />
-                </button>
-                : ""}
-            </TodoItem>
-          )}
-        <dialog id="compose-dialog" className="absolute left-0 right-0 top-0 bottom-0  backdrop-blur p-4 rounded-2xl bg-slate-200/70 dark:bg-slate-900/95">
-          <div>
-            <div className="flex flex-row-reverse">
+          <div className="flex flex-row justify-between">
+            {todos.size != 0 ?
               <CustomButton
                 style=""
-                label={"Close"}
-                icon={<FontAwesomeIcon icon={faXmark} />}
-                onClick={() => setDialogVisible(false)}
-              />
-            </div>
-            <ComposeWindow
-              onSubmit={newTodo => submitTodo(newTodo)}
-            />
+                label={editMode ? "Cancel" : "Edit"}
+                icon={undefined}
+                onClick={() => setEditMode(!editMode)} />
+              : ""
+            }
+            <CustomButton
+              style=""
+              label={"Add"}
+              icon={<FontAwesomeIcon icon={faPlus} />}
+              onClick={() => setDialogVisible(true)} />
           </div>
 
-        </dialog>
-      </div>
-    </main>
+          {todos.size == 0 ?
+            <div className="flex justify-center text-slate-400">
+              No tasks left!
+            </div>
+            :
+
+            Array.from(todos).map(todo =>
+              <TodoItem
+                key={todo.title}
+                todo={todo}
+                onClick={() => !editMode ? updateDoneTodos(todo) : {}}
+                isChecked={isDone(todo)}>
+                {editMode ?
+                  <button>
+                    <FontAwesomeIcon icon={faTrash} onClick={() => deleteTodo(todo)} />
+                  </button>
+                  : ""}
+              </TodoItem>
+            )}
+          <dialog id="compose-dialog" className="absolute left-0 right-0 top-0 bottom-0  backdrop-blur p-4 rounded-2xl bg-slate-200/70 dark:bg-slate-900/95">
+            <div>
+              <div className="flex flex-row-reverse">
+                <CustomButton
+                  style=""
+                  label={"Close"}
+                  icon={<FontAwesomeIcon icon={faXmark} />}
+                  onClick={() => setDialogVisible(false)}
+                />
+              </div>
+              <ComposeWindow
+                onSubmit={newTodo => submitTodo(newTodo)}
+              />
+            </div>
+
+          </dialog>
+        </div>
+      </main>
+      <footer className="my-8 text-gray-400">
+        <p className="text-center">Made by <a className="text-blue-400" href="http://migvidal.com">Migvidal</a></p>
+        <p className="text-center">Although not an original idea, this was made from scratch, without following any tutorials.</p>
+      </footer>
+    </div>
   )
 }
 
